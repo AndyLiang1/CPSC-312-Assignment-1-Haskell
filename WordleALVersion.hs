@@ -11,14 +11,6 @@ import Prelude hiding (Nothing, Just, Maybe)
 
 checkWin userWordSoFar answer =
     userWordSoFar == answer
-    
--- compareWord userWordSoFar answer = foldr (\x y ->
---     if (elemIndex x userWordSoFar) == (elemIndex x answer)
---         then 'G' : y
---     else if x `elem` answer
---         then 'Y' : y
---     else 'X' : y
---     ) [] userWordSoFar
 
 compareWord [] [] result answer = result
 compareWord (firstCharOfUserWord : restOfUserWord) (firstCharOfAnswer : restOfAnswer) result answer

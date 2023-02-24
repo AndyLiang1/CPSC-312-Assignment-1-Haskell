@@ -5,13 +5,6 @@ import Prelude hiding (Nothing, Just, Maybe)
 {-# HLINT ignore "Redundant if" #-}
 {-# HLINT ignore "Redundant bracket" #-}
 
-
-
-
-
-checkWin userWordSoFar answer =
-    userWordSoFar == answer
-
 compareWord [] [] result answer = result
 compareWord (firstCharOfUserWord : restOfUserWord) (firstCharOfAnswer : restOfAnswer) result answer
   | (firstCharOfUserWord == firstCharOfAnswer) = compareWord restOfUserWord restOfAnswer (result++['G']) answer
@@ -48,8 +41,6 @@ play numberOfTries =
     else 
         do 
             guess <- getLine
-            -- let possibleValidateMsg = validateGuess guess
-            -- putStrLn(show possibleValidateMsg)
             if ((compareWord guess "happy" [] "happy") == "GGGGG")
                 then putStrLn("You won! Well done :)")
             else 
@@ -57,22 +48,6 @@ play numberOfTries =
                     let gameState = (compareWord guess "happy" [] "happy") 
                     putStrLn(show gameState)
                     play (numberOfTries-1)
-
--- lengthOfList lst = foldr (\ x y -> y + 1) 0 lst
-
-
--- printMaybe :: Show a => Maybe a -> String
--- printMaybe Nothing = "Nothing"
--- printMaybe (Just a) = show a
-
--- data Maybe a = Nothing | Just a
-
--- validateGuess :: [Char] -> Maybe [Char]
--- validateGuess guess = 
---     if lengthOfList guess /= 5
---         then Just "Please enter a proper length"
---         else  Nothing
-                
 
 
 

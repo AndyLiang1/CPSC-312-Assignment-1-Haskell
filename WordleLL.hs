@@ -1,5 +1,7 @@
 import System.Random
 import Data.Char
+import Graphics.Gloss
+import System.Random
 
 data State = State [String] Int
 
@@ -44,10 +46,10 @@ start game start_state ws =
             else
                 do
                     answer <- randomWord
-                    play game (Action answer) (ContinueGame start_state) ws
+                    playGame game (Action answer) (ContinueGame start_state) ws
 
-play :: Game -> Action -> Result -> WordleState -> IO WordleState
-play game answer (ContinueGame state) ws =
+playGame :: Game -> Action -> Result -> WordleState -> IO WordleState
+playGame game answer (ContinueGame state) ws =
     do
         putStrLn("--------------------------")
         displayInfo state
@@ -60,17 +62,17 @@ play game answer (ContinueGame state) ws =
                 if (all isLower line)
                     then
                     do
-                        play game answer (game (Action line) answer state) ws
+                        playGame game answer (game (Action line) answer state) ws
                     else
                         do
                             putStrLn("Illegal move " ++ line ++ ". Please input all lowercase.")
-                            play game answer (ContinueGame state) ws
+                            playGame game answer (ContinueGame state) ws
             else
                 do
                     putStrLn("Illegal move " ++ line ++ ". Please input a 5 letter guess.")
-                    play game answer (ContinueGame state) ws
+                    playGame game answer (ContinueGame state) ws
 
-play game answer (EndOfGame val start_state) ws =
+playGame game answer (EndOfGame val start_state) ws =
     do
         newws <- update_wordle_state val answer ws
         start game start_state newws
@@ -108,3 +110,5 @@ update_wordle_state val (Action answer) (wins, losses)
 begin = start wordle wordle_start (0, 0)
 
 word_bank = ["which", "their", "would", "there", "could", "other", "about", "great", "these", "after", "first", "never", "where", "those", "shall", "being", "might", "every", "think", "under", "found", "still", "while", "again", "place", "young", "years", "three", "right", "house", "whole", "world", "thing", "night", "going", "heard", "heart", "among", "asked", "small", "woman", "whose", "quite", "words", "given", "taken", "hands", "until", "since", "light", "began", "large", "water", "works", "often", "stood", "power", "money", "order", "means", "round", "voice", "white", "point", "state", "above", "death", "least", "known", "along", "leave", "alone", "women", "times", "speak", "forth", "terms", "cried", "child", "human", "short", "cause", "seems", "bring", "doubt", "black", "sense", "close", "truth", "ought", "party", "ready", "force", "early", "earth", "sight", "spoke", "story", "later", "added", "stand", "nicht", "again", "miles", "comes", "table", "hours", "river", "happy", "clear", "sound", "makes", "blood", "comme", "doing", "avait", "tried", "front", "quill", "peace", "lived", "horse", "wrote", "paper", "cette", "chief", "books", "visit", "heavy", "knows", "loved", "carry", "plain", "sweet", "write", "trees", "below", "wrong", "reach", "noble", "parts", "agree", "moved", "enemy", "worth", "green", "third", "mouth", "sleep", "fresh", "faith", "there", "smile", "usual", "bound", "quiet", "etext", "court", "youth", "piece", "meant", "world", "seven", "tears", "value", "broke", "fight", "stone", "begin", "learn", "lines", "grand", "takes", "month", "girls", "gives", "eight", "scene", "lives", "drawn", "fifty", "field", "chair", "named", "allow", "music", "fixed", "study", "spent", "trust", "break", "equal", "threw", "watch", "looks", "built", "using", "spite", "moral", "walls", "touch", "steps", "offer", "house", "dress", "lying", "grave", "legal", "lower", "other", "cases", "night", "shown", "names", "board", "faire", "glass", "share", "forms", "class", "start", "shook", "train", "enter", "prove", "floor", "worse", "sorry", "pride", "place", "marry", "crowd", "shore", "drink", "judge"]
+
+foo = display (InWindow "Nice Window" (200, 200) (10, 10)) white (Circle 80)

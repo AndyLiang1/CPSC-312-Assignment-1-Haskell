@@ -43,12 +43,14 @@ wordle :: Game
 wordle move (State (guessesSoFar, numLives) possibleActions) = 
   if numLives == 1
     then if compareWord move "happy" [] "happy" == "GGGGG"
-        then EndOfGame 1 (State ([], 0) possibleActions)
+        then EndOfGame 1 (State ([], 5) possibleActions)
         else EndOfGame (-1) (State ([], 5) possibleActions)
     else
         do
         let response = compareWord move "happy" [] "happy"
-        ContinueGame (State (guessesSoFar++[move ++ " | " ++ response], numLives-1) possibleActions)
+        if(compareWord move "happy" [] "happy" == "GGGGG") 
+            then EndOfGame 1 (State ([], 5) possibleActions)
+            else ContinueGame (State (guessesSoFar++[move ++ " | " ++ response], numLives-1) possibleActions)
 
 --   | compareWord move "happy" [] "happy" == "GGGGG" = EndOfGame 1 (State ([], 0) possibleActions)
 --   | numLives == 0 = EndOfGame (-1) (State ([], 5) possibleActions)
@@ -58,8 +60,8 @@ wordle move (State (guessesSoFar, numLives) possibleActions) =
 --     ContinueGame (State (guessesSoFar++[move ++ " | " ++ response], numLives-1) possibleActions)
 
 
-play :: Game -> State -> TournammentState -> IO TournammentState
-play game currState tournamentState =
+playGame :: Game -> State -> TournammentState -> IO TournammentState
+playGame game currState tournamentState =
     let (wins, losses) = tournamentState in
     do
         putStrLn ("Tournament results: "++ show wins++ " wins "++show losses++" losses ")
@@ -72,7 +74,7 @@ personPlay :: Game -> Result -> TournammentState -> IO TournammentState
 personPlay game (EndOfGame val startStateForNewGame) tournamentState =
     do
         updatedTournamentState <- updateTournamentState val tournamentState
-        play game startStateForNewGame updatedTournamentState
+        playGame game startStateForNewGame updatedTournamentState
 
 personPlay game (ContinueGame currState) tournamentState =
     do

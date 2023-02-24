@@ -22,18 +22,10 @@ wordle move answer (State history attempts)
         ContinueGame (State (history++[show move ++ "|" ++ response]) (attempts-1))
 
 wordle_start = State [] 6
-    
--- randomElement :: [a] -> IO a
-randomElement list = do
-  gen <- getStdGen
-  let (i, g) = randomR (0, length list - 1) gen
-  return $ list !! i
-
 
 -- show and read actions just as the String
 instance Show Action where
     show (Action i) = show i
-
 
 type WordleState = (Int, Int)         -- wins, losses
 
